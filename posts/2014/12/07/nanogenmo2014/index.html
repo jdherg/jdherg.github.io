@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>John Hergenroeder - Python</title>
+        <title>NaNoGenMo2014</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="http://jdherg.github.io/theme/css/main.css" type="text/css" />
         <link href="http://jdherg.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="John Hergenroeder Atom Feed" />
@@ -27,16 +27,19 @@
                     <li><a href="archives.html">Archives</a></li>
                     <li><a href="http://jdherg.github.io/pages/about.html">About</a></li>
                 <!--  -->
-                    <!-- <li ><a href="http://jdherg.github.io/category/blog.html">Blog</a></li> -->
+                    <!-- <li class="active"><a href="http://jdherg.github.io/category/blog.html">Blog</a></li> -->
                 <!--  -->
                 </ul></nav>
         </header><!-- /#banner -->
-        
-        
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="posts/2014/12/07/nanogenmo2014/" rel="bookmark"
+           title="Permalink to NaNoGenMo2014">NaNoGenMo2014</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://jdherg.github.io/posts/2014/12/07/nanogenmo2014/">NaNoGenMo2014</a></h1> 
+    <div class="entry-content">
 <footer class="post-info">
 <hr>
         <abbr class="published" title="2014-12-07T23:00:00">
@@ -45,7 +48,7 @@
 
 <!-- <p>In <a href="http://jdherg.github.io/category/blog.html">Blog</a>. </p> -->
 <p>tags: <a href="http://jdherg.github.io/tag/programming.html">Programming</a><a href="http://jdherg.github.io/tag/projects.html">Projects</a><a href="http://jdherg.github.io/tag/python.html">Python</a></p><hr>
-</footer><!-- /.post-info --><p>Since 2000, November has been <a href="http://en.wikipedia.org/wiki/National_Novel_Writing_Month">National Novel Writing Month</a> (or NaNoWriMo), a chance for people around the world to hunker down and spend a month writing a 50000 word novel. <a href="https://twitter.com/tinysubversions/status/396305662000775168">Since 2013</a>, November has also been National Novel Generation Month (NaNoGenMo), a chance for people around the world to hunker down and spend a month writing a program that generates a 50000 word novel.</p>
+</footer><!-- /.post-info -->      <p>Since 2000, November has been <a href="http://en.wikipedia.org/wiki/National_Novel_Writing_Month">National Novel Writing Month</a> (or NaNoWriMo), a chance for people around the world to hunker down and spend a month writing a 50000 word novel. <a href="https://twitter.com/tinysubversions/status/396305662000775168">Since 2013</a>, November has also been National Novel Generation Month (NaNoGenMo), a chance for people around the world to hunker down and spend a month writing a program that generates a 50000 word novel.</p>
 <p>The <a href="https://github.com/dariusk/NaNoGenMo-2014#the-rules">NaNoGenMo 2014 Rules</a> are simple: share a 50k+ word novel (and the source code that generated it). There are no rules on meaningfulness or originality, but there is a request that copyright is respected. Beyond that, anything is fair game.</p>
 <p>This year, with a little extra time during my Thanksgiving vacation, I decided to join the last quarter of NaNoGenMo. With so little time left, I decided my entry would be a little light remixing of existing work.</p>
 <h1>Redactron</h1>
@@ -102,35 +105,11 @@ wish he had danced with Exxxx.&quot;
 
 
 <p>While most of the identities are obscured there, the unfortunate 'Mxx. Long' has a name that also appears in the text elsewhere as a lowercase word. As it is, the very simple model used for targeting words doesn't do a very good job with names that are also non-name words. A better targeting model might do something like take into account more than one word at a time, or include a list of known titles.</p>
-<p>Even more generally, I'd love to take time to split the implementation details out a bit to make the utility more modular and thereby more customizable. Specifically, I think that providing easy ways to switch between targeting models and to switch between censoring methods could be fun! Redacting random words, every third word, or words beginning with some particular letter could potentially produce results that feel very different. Similarly, different replacement options could produce fun results: 'Elizabeth Bennet of Longbourn' currently becomes 'Exxxxxxxx Bxxxxx of Lxxxxxxxx' but could just as easily become 'ɥʇǝqɐzıןǝ ʇǝuuǝq of uɹnoqbuoן' or (using my recent favorite substitution, nearest <a href="https://github.com/dariusk/corpora/blob/master/data/animals/dinosaurs.json">dinosaur</a>) 'Elmisaurus Belodon of Longisquama'. The possibilities are endless!</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-        
+<p>Even more generally, I'd love to take time to split the implementation details out a bit to make the utility more modular and thereby more customizable. Specifically, I think that providing easy ways to switch between targeting models and to switch between censoring methods could be fun! Redacting random words, every third word, or words beginning with some particular letter could potentially produce results that feel very different. Similarly, different replacement options could produce fun results: 'Elizabeth Bennet of Longbourn' currently becomes 'Exxxxxxxx Bxxxxx of Lxxxxxxxx' but could just as easily become 'ɥʇǝqɐzıןǝ ʇǝuuǝq of uɹnoqbuoן' or (using my recent favorite substitution, nearest <a href="https://github.com/dariusk/corpora/blob/master/data/animals/dinosaurs.json">dinosaur</a>) 'Elmisaurus Belodon of Longisquama'. The possibilities are endless!</p>
+    </div><!-- /.entry-content -->
 
- 
-            <li><article class="hentry">    
-                <header>
-                        <h1><a href="http://jdherg.github.io/posts/2014/11/21/pyet/" rel="bookmark" title="Permalink to Pyet">Pyet</a></h1>
-                </header>
-                
-                <div class="entry-content">
-<footer class="post-info">
-<hr>
-        <abbr class="published" title="2014-11-21T09:00:00">
-                Fri 21 November 2014
-        </abbr>
-
-<!-- <p>In <a href="http://jdherg.github.io/category/blog.html">Blog</a>. </p> -->
-<p>tags: <a href="http://jdherg.github.io/tag/programming.html">Programming</a><a href="http://jdherg.github.io/tag/projects.html">Projects</a><a href="http://jdherg.github.io/tag/python.html">Python</a></p><hr>
-</footer><!-- /.post-info -->                <p>This month I was hunting for a fun Python project I could get done with just the standard library when I read <a href="http://jennmoney.biz/">Jenn Schiffer</a>'s <a href="http://vart.institute/mondrian/index.html">vart.institute article on Piet Mondrian</a>. The article linked to the <a href="http://www.dangermouse.net/esoteric/piet.html">Piet Programming Language</a>. With a limited set of instructions and equally limited state (a ...</p>
-                <a class="readmore" href="http://jdherg.github.io/posts/2014/11/21/pyet/">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-            </ol><!-- /#posts-list -->
-            </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
         </section><!-- /#extras -->
 

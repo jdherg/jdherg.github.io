@@ -1,5 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>John Hergenroeder</title><link href="http://jdherg.github.io/" rel="alternate"></link><link href="http://jdherg.github.io/feeds/all.atom.xml" rel="self"></link><id>http://jdherg.github.io/</id><updated>2014-11-21T09:00:00-06:00</updated><entry><title>Pyet</title><link href="http://jdherg.github.io/posts/2014/11/21/pyet/" rel="alternate"></link><updated>2014-11-21T09:00:00-06:00</updated><author><name></name></author><id>tag:jdherg.github.io,2014-11-21:posts/2014/11/21/pyet/</id><summary type="html">&lt;p&gt;This month I was hunting for a fun Python project I could get done with just the standard library when I read &lt;a href="http://jennmoney.biz/"&gt;Jenn Schiffer&lt;/a&gt;'s &lt;a href="http://vart.institute/mondrian/index.html"&gt;vart.institute article on Piet Mondrian&lt;/a&gt;. The article linked to the &lt;a href="http://www.dangermouse.net/esoteric/piet.html"&gt;Piet Programming Language&lt;/a&gt;. With a limited set of instructions and equally limited state (a source file, a stack, and a few other variables), a toy Piet interpreter in Python sounded like a great fit for my goal!&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>John Hergenroeder</title><link href="http://jdherg.github.io/" rel="alternate"></link><link href="http://jdherg.github.io/feeds/all.atom.xml" rel="self"></link><id>http://jdherg.github.io/</id><updated>2014-12-07T23:00:00-06:00</updated><entry><title>NaNoGenMo2014</title><link href="http://jdherg.github.io/posts/2014/12/07/nanogenmo2014/" rel="alternate"></link><updated>2014-12-07T23:00:00-06:00</updated><author><name></name></author><id>tag:jdherg.github.io,2014-12-07:posts/2014/12/07/nanogenmo2014/</id><summary type="html">&lt;p&gt;Since 2000, November has been &lt;a href="http://en.wikipedia.org/wiki/National_Novel_Writing_Month"&gt;National Novel Writing Month&lt;/a&gt; (or NaNoWriMo), a chance for people around the world to hunker down and spend a month writing a 50000 word novel. &lt;a href="https://twitter.com/tinysubversions/status/396305662000775168"&gt;Since 2013&lt;/a&gt;, November has also been National Novel Generation Month (NaNoGenMo), a chance for people around the world to hunker down and spend a month writing a program that generates a 50000 word novel.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="https://github.com/dariusk/NaNoGenMo-2014#the-rules"&gt;NaNoGenMo 2014 Rules&lt;/a&gt; are simple: share a 50k+ word novel (and the source code that generated it). There are no rules on meaningfulness or originality, but there is a request that copyright is respected. Beyond that, anything is fair game.&lt;/p&gt;
+&lt;p&gt;This year, with a little extra time during my Thanksgiving vacation, I decided to join the last quarter of NaNoGenMo. With so little time left, I decided my entry would be a little light remixing of existing work.&lt;/p&gt;
+&lt;h1&gt;Redactron&lt;/h1&gt;
+&lt;h3&gt;Conception&lt;/h3&gt;
+&lt;p&gt;In some older novels, authors &lt;a href="http://ask.metafilter.com/72590/Why-censor-town-names"&gt;opted to censor the names of towns and people&lt;/a&gt; for any of a variety of reasons: to avoid accusations of gossip or libel; to give the impression the novel really was gossip and thus had to be censored; or possibly even to aid suspension of disbelief by allowing readers to substitute in places and people they were already familiar with. These days, that sort of censorship evokes a different context -- redaction of documents for public release.&lt;/p&gt;
+&lt;p&gt;For my NaNoGenMo experiment, I wanted to make a tool that created that took source texts and censored them, obscuring targeted portions of the input text. For my first run, I decided that I'd try to target proper nouns for redaction. With that goal in mind, &lt;a href="https://github.com/jdherg/redactron"&gt;the Redactron&lt;/a&gt;!&lt;/p&gt;
+&lt;h3&gt;Implementation&lt;/h3&gt;
+&lt;p&gt;My first instinct was to use this project as an excuse to try out &lt;a href="http://www.nltk.org/"&gt;NLTK&lt;/a&gt;, which has lots of options for &lt;a href="http://www.nltk.org/book/ch05.html"&gt;tagging words&lt;/a&gt;, including identifying parts of speech (like proper nouns!). However, NLTK uses lots and lots of corpora, models, and other data to do their tagging. That wasn't quite the lightweight approach to NaNoGenMo I wanted to take -- it was time to try something simpler.&lt;/p&gt;
+&lt;p&gt;Keeping in mind that a perfect result wasn't necessary to create the same general impression as real proper-noun tagging, I went about trying to get as close as I could with just the standard library and very little code on top of it. I settled on a simple approach:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="c"&gt;# Split the text into words:&lt;/span&gt;
+ &lt;span class="n"&gt;words&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;\W+&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;input_text&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+ &lt;span class="c"&gt;# Pick out the words that are upper case:&lt;/span&gt;
+ &lt;span class="n"&gt;upcase&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;word&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;word&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;words&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isupper&lt;/span&gt;&lt;span class="p"&gt;()]&lt;/span&gt;
+ &lt;span class="c"&gt;#Discard words that appear elsewhere in the text in lower case:&lt;/span&gt;
+ &lt;span class="n"&gt;only_up&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;word&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;word&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;upcase&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;words&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+ &lt;span class="c"&gt;#Redact words that remain where they appear. (See repo for details.)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Result&lt;/h3&gt;
+&lt;p&gt;That approach actually ended up being pretty successful. Here's a representative passage from Jane Austen's Pride &amp;amp; Prejudice, the text I tested with.&lt;/p&gt;
+&lt;p&gt;Original:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;Elizabeth Bennet had been obliged, by the scarcity of gentlemen, to sit
+down for two dances; and during part of that time, Mr. Darcy had been
+standing near enough for her to hear a conversation between him and Mr.
+Bingley, who came from the dance for a few minutes, to press his friend
+to join it.
+
+&amp;quot;Come, Darcy,&amp;quot; said he, &amp;quot;I must have you dance. I hate to see you
+standing about by yourself in this stupid manner. You had much better
+dance.&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Redacted:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;Exxxxxxxx Bxxxxx had been obliged, by the scarcity of gentlemen, to sit
+down for two dances; and during part of that time, Mx. Dxxxx had been
+standing near enough for her to hear a conversation between him and Mx.
+Bxxxxxx, who came from the dance for a few minutes, to press his friend
+to join it.
+
+&amp;quot;Come, Dxxxx,&amp;quot; said he, &amp;quot;I must have you dance. I hate to see you
+standing about by yourself in this stupid manner. You had much better
+dance.&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Not bad! We've successfully obscured the names but not the 'Come' or 'You' that start sentences.&lt;/p&gt;
+&lt;h3&gt;Future&lt;/h3&gt;
+&lt;p&gt;Of course, there's always room for improvement! A little later in the book is this passage:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&amp;quot;I do not mind his not talking to Mxx. Long,&amp;quot; said Miss Lxxxx, &amp;quot;but I
+wish he had danced with Exxxx.&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;While most of the identities are obscured there, the unfortunate 'Mxx. Long' has a name that also appears in the text elsewhere as a lowercase word. As it is, the very simple model used for targeting words doesn't do a very good job with names that are also non-name words. A better targeting model might do something like take into account more than one word at a time, or include a list of known titles.&lt;/p&gt;
+&lt;p&gt;Even more generally, I'd love to take time to split the implementation details out a bit to make the utility more modular and thereby more customizable. Specifically, I think that providing easy ways to switch between targeting models and to switch between censoring methods could be fun! Redacting random words, every third word, or words beginning with some particular letter could potentially produce results that feel very different. Similarly, different replacement options could produce fun results: 'Elizabeth Bennet of Longbourn' currently becomes 'Exxxxxxxx Bxxxxx of Lxxxxxxxx' but could just as easily become 'ɥʇǝqɐzıןǝ ʇǝuuǝq of uɹnoqbuoן' or (using my recent favorite substitution, nearest &lt;a href="https://github.com/dariusk/corpora/blob/master/data/animals/dinosaurs.json"&gt;dinosaur&lt;/a&gt;) 'Elmisaurus Belodon of Longisquama'. The possibilities are endless!&lt;/p&gt;</summary><category term="Programming"></category><category term="Projects"></category><category term="Python"></category></entry><entry><title>Pyet</title><link href="http://jdherg.github.io/posts/2014/11/21/pyet/" rel="alternate"></link><updated>2014-11-21T09:00:00-06:00</updated><author><name></name></author><id>tag:jdherg.github.io,2014-11-21:posts/2014/11/21/pyet/</id><summary type="html">&lt;p&gt;This month I was hunting for a fun Python project I could get done with just the standard library when I read &lt;a href="http://jennmoney.biz/"&gt;Jenn Schiffer&lt;/a&gt;'s &lt;a href="http://vart.institute/mondrian/index.html"&gt;vart.institute article on Piet Mondrian&lt;/a&gt;. The article linked to the &lt;a href="http://www.dangermouse.net/esoteric/piet.html"&gt;Piet Programming Language&lt;/a&gt;. With a limited set of instructions and equally limited state (a source file, a stack, and a few other variables), a toy Piet interpreter in Python sounded like a great fit for my goal!&lt;/p&gt;
 &lt;h1&gt;Piet&lt;/h1&gt;
 &lt;p&gt;Named after Piet Mondrian, Piet is a language crafted by &lt;a href="http://www.dangermouse.net/"&gt;David Morgan-Mar&lt;/a&gt; that uses abstract art as source code. You can find a thorough discussion of the language at the &lt;a href="http://www.dangermouse.net/esoteric/piet.html"&gt;official Piet page&lt;/a&gt;, but I'll try to sum it up briefly.&lt;/p&gt;
 &lt;h3&gt;Execution&lt;/h3&gt;

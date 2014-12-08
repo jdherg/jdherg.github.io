@@ -36,7 +36,87 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://jdherg.github.io/posts/2014/11/21/pyet/">Pyet</a></h1> 
+                    <h1 class="entry-title"><a href="http://jdherg.github.io/posts/2014/12/07/nanogenmo2014/">NaNoGenMo2014</a></h1> 
+<footer class="post-info">
+<hr>
+        <abbr class="published" title="2014-12-07T23:00:00">
+                Sun 07 December 2014
+        </abbr>
+
+<!-- <p>In <a href="http://jdherg.github.io/category/blog.html">Blog</a>. </p> -->
+<p>tags: <a href="http://jdherg.github.io/tag/programming.html">Programming</a><a href="http://jdherg.github.io/tag/projects.html">Projects</a><a href="http://jdherg.github.io/tag/python.html">Python</a></p><hr>
+</footer><!-- /.post-info --><p>Since 2000, November has been <a href="http://en.wikipedia.org/wiki/National_Novel_Writing_Month">National Novel Writing Month</a> (or NaNoWriMo), a chance for people around the world to hunker down and spend a month writing a 50000 word novel. <a href="https://twitter.com/tinysubversions/status/396305662000775168">Since 2013</a>, November has also been National Novel Generation Month (NaNoGenMo), a chance for people around the world to hunker down and spend a month writing a program that generates a 50000 word novel.</p>
+<p>The <a href="https://github.com/dariusk/NaNoGenMo-2014#the-rules">NaNoGenMo 2014 Rules</a> are simple: share a 50k+ word novel (and the source code that generated it). There are no rules on meaningfulness or originality, but there is a request that copyright is respected. Beyond that, anything is fair game.</p>
+<p>This year, with a little extra time during my Thanksgiving vacation, I decided to join the last quarter of NaNoGenMo. With so little time left, I decided my entry would be a little light remixing of existing work.</p>
+<h1>Redactron</h1>
+<h3>Conception</h3>
+<p>In some older novels, authors <a href="http://ask.metafilter.com/72590/Why-censor-town-names">opted to censor the names of towns and people</a> for any of a variety of reasons: to avoid accusations of gossip or libel; to give the impression the novel really was gossip and thus had to be censored; or possibly even to aid suspension of disbelief by allowing readers to substitute in places and people they were already familiar with. These days, that sort of censorship evokes a different context -- redaction of documents for public release.</p>
+<p>For my NaNoGenMo experiment, I wanted to make a tool that created that took source texts and censored them, obscuring targeted portions of the input text. For my first run, I decided that I'd try to target proper nouns for redaction. With that goal in mind, <a href="https://github.com/jdherg/redactron">the Redactron</a>!</p>
+<h3>Implementation</h3>
+<p>My first instinct was to use this project as an excuse to try out <a href="http://www.nltk.org/">NLTK</a>, which has lots of options for <a href="http://www.nltk.org/book/ch05.html">tagging words</a>, including identifying parts of speech (like proper nouns!). However, NLTK uses lots and lots of corpora, models, and other data to do their tagging. That wasn't quite the lightweight approach to NaNoGenMo I wanted to take -- it was time to try something simpler.</p>
+<p>Keeping in mind that a perfect result wasn't necessary to create the same general impression as real proper-noun tagging, I went about trying to get as close as I could with just the standard library and very little code on top of it. I settled on a simple approach:</p>
+<div class="codehilite"><pre> <span class="c"># Split the text into words:</span>
+ <span class="n">words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;\W+&#39;</span><span class="p">,</span> <span class="n">input_text</span><span class="p">))</span>
+ <span class="c"># Pick out the words that are upper case:</span>
+ <span class="n">upcase</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="ow">and</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">()]</span>
+ <span class="c">#Discard words that appear elsewhere in the text in lower case:</span>
+ <span class="n">only_up</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">upcase</span> <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+ <span class="c">#Redact words that remain where they appear. (See repo for details.)</span>
+</pre></div>
+
+
+<h3>Result</h3>
+<p>That approach actually ended up being pretty successful. Here's a representative passage from Jane Austen's Pride &amp; Prejudice, the text I tested with.</p>
+<p>Original:</p>
+<div class="codehilite"><pre>Elizabeth Bennet had been obliged, by the scarcity of gentlemen, to sit
+down for two dances; and during part of that time, Mr. Darcy had been
+standing near enough for her to hear a conversation between him and Mr.
+Bingley, who came from the dance for a few minutes, to press his friend
+to join it.
+
+&quot;Come, Darcy,&quot; said he, &quot;I must have you dance. I hate to see you
+standing about by yourself in this stupid manner. You had much better
+dance.&quot;
+</pre></div>
+
+
+<p>Redacted:</p>
+<div class="codehilite"><pre>Exxxxxxxx Bxxxxx had been obliged, by the scarcity of gentlemen, to sit
+down for two dances; and during part of that time, Mx. Dxxxx had been
+standing near enough for her to hear a conversation between him and Mx.
+Bxxxxxx, who came from the dance for a few minutes, to press his friend
+to join it.
+
+&quot;Come, Dxxxx,&quot; said he, &quot;I must have you dance. I hate to see you
+standing about by yourself in this stupid manner. You had much better
+dance.&quot;
+</pre></div>
+
+
+<p>Not bad! We've successfully obscured the names but not the 'Come' or 'You' that start sentences.</p>
+<h3>Future</h3>
+<p>Of course, there's always room for improvement! A little later in the book is this passage:</p>
+<div class="codehilite"><pre>&quot;I do not mind his not talking to Mxx. Long,&quot; said Miss Lxxxx, &quot;but I
+wish he had danced with Exxxx.&quot;
+</pre></div>
+
+
+<p>While most of the identities are obscured there, the unfortunate 'Mxx. Long' has a name that also appears in the text elsewhere as a lowercase word. As it is, the very simple model used for targeting words doesn't do a very good job with names that are also non-name words. A better targeting model might do something like take into account more than one word at a time, or include a list of known titles.</p>
+<p>Even more generally, I'd love to take time to split the implementation details out a bit to make the utility more modular and thereby more customizable. Specifically, I think that providing easy ways to switch between targeting models and to switch between censoring methods could be fun! Redacting random words, every third word, or words beginning with some particular letter could potentially produce results that feel very different. Similarly, different replacement options could produce fun results: 'Elizabeth Bennet of Longbourn' currently becomes 'Exxxxxxxx Bxxxxx of Lxxxxxxxx' but could just as easily become 'ɥʇǝqɐzıןǝ ʇǝuuǝq of uɹnoqbuoן' or (using my recent favorite substitution, nearest <a href="https://github.com/dariusk/corpora/blob/master/data/animals/dinosaurs.json">dinosaur</a>) 'Elmisaurus Belodon of Longisquama'. The possibilities are endless!</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+        
+
+ 
+            <li><article class="hentry">    
+                <header>
+                        <h1><a href="http://jdherg.github.io/posts/2014/11/21/pyet/" rel="bookmark" title="Permalink to Pyet">Pyet</a></h1>
+                </header>
+                
+                <div class="entry-content">
 <footer class="post-info">
 <hr>
         <abbr class="published" title="2014-11-21T09:00:00">
@@ -45,88 +125,10 @@
 
 <!-- <p>In <a href="http://jdherg.github.io/category/blog.html">Blog</a>. </p> -->
 <p>tags: <a href="http://jdherg.github.io/tag/programming.html">Programming</a><a href="http://jdherg.github.io/tag/projects.html">Projects</a><a href="http://jdherg.github.io/tag/python.html">Python</a></p><hr>
-</footer><!-- /.post-info --><p>This month I was hunting for a fun Python project I could get done with just the standard library when I read <a href="http://jennmoney.biz/">Jenn Schiffer</a>'s <a href="http://vart.institute/mondrian/index.html">vart.institute article on Piet Mondrian</a>. The article linked to the <a href="http://www.dangermouse.net/esoteric/piet.html">Piet Programming Language</a>. With a limited set of instructions and equally limited state (a source file, a stack, and a few other variables), a toy Piet interpreter in Python sounded like a great fit for my goal!</p>
-<h1>Piet</h1>
-<p>Named after Piet Mondrian, Piet is a language crafted by <a href="http://www.dangermouse.net/">David Morgan-Mar</a> that uses abstract art as source code. You can find a thorough discussion of the language at the <a href="http://www.dangermouse.net/esoteric/piet.html">official Piet page</a>, but I'll try to sum it up briefly.</p>
-<h3>Execution</h3>
-<p>Piet programs are images treated as sets of discrete blocks of color. A Piet interpreter behaves like a robot traversing the surface of the image: it moves from block to block, executing commands depending on the colors of the blocks it is transitioning between.</p>
-<h4>Navigation</h4>
-<p>At each execution step, the interpreter has to decide which adjacent block to move to next.</p>
-<p>To make that decision, the interpreter uses three pieces of information: its current block, a <em>direction pointer (DP)</em> that indicates which direction to move next, and a <em>codel chooser (CC)</em> it uses to choose between blocks if there are multiple options adjacent to the current block in that direction.</p>
-<p>The interpreter first finds the edge of the current block which is furthest in the direction of the DP, then uses the CC to select a block adjacent to the current block on that edge. The interpreter tries to move into that block next.</p>
-<p>If that block is a color other than black or white, the move succeeds. If it's black, the move fails and the interpreter changes the DP or CC and looks for a new block to try. If it's white, the interpreter slips over the white block until it hits a black wall or a non-black block.</p>
-<h4>Colors/Instructions</h4>
-<p>Once the interpreter has successfully moved from one block to another, it tries to execute an instruction. To figure out which instruction to execute, it compares the color of the old block with the color of the new block. The difference in hue and lightness between the two colors is determined, and those values are used to look up the instruction to execute. The interpreter tries to execute that instruction and the cycle begins again!</p>
-<h1>Pyet</h1>
-<p><a href="https://github.com/jdherg/pyet">Pyet</a> is my implementation of a Piet interpreter using the Python 3 standard library (with one notable exception).</p>
-<h3>Image cheat</h3>
-<p>Unfortunately, Python doesn't have an image handling module in the standard library. That's a pretty big obstacle when writing an interpreter for an image-based language! Rather than trying to re-implement image reading from scratch, I decided that it was within the spirit of the project to use a third-party library to turn the image into an equivalent text format before the actual interpreter got going. As a result my toy interpreter comes with a helper script to turn a Piet source file into a Pyet source file. I made it with Pillow, which made handling the popular image formats straightforward.</p>
-<h3>Program structure (Classes)</h3>
-<p>Pyet splits interpretation logic into four classes:</p>
-<ul>
-<li>
-<p>A <strong>PietStack</strong> which behaves as a stack and executes all of the stack-related operations Piet requires.</p>
-<ul>
-<li>Per the Piet spec, the PietStack is designed to fail by opting not to perform operations that would throw exceptions. It accomplishes this by returning <code>None</code> for pop operations that would fail and silently skipping stack manipulations that would be erroneous.</li>
-</ul>
-</li>
-<li>
-<p>A <strong>SourceMap</strong> which holds and annotates the Pyet representation of the Piet source being interpreted.</p>
-<ul>
-<li>The annotation process splits the source into blocks and calculates information about those blocks for use in execution. More on this later.</li>
-</ul>
-</li>
-<li>
-<p>A <strong>Navigator</strong> which holds the SourceMap and uses it to determine which block the interpreter should move to next.</p>
-<ul>
-<li>The Navigator takes care of all of the navigation logic mentioned earlier: sliding across white spaces, turning when obstacles are encountered, and transitioning between blocks.</li>
-</ul>
-</li>
-<li>
-<p>An <strong>Interpreter</strong> which contains the PietStack and Navigator and uses them to interpret and execute the program.</p>
-<ul>
-<li>The Interpreter maintains the program's non-stack state and executes commands as required by movement between the blocks.</li>
-</ul>
-</li>
-</ul>
-<h3>Interpretation</h3>
-<p>Pyet interpretation goes in three stages:</p>
-<ol>
-<li>
-<p><strong>Initialization.</strong> the Interpreter is instantiated, creating an empty PietStack and Navigator in turn. The Navigator creates a SourceMap and passes the source to it.</p>
-</li>
-<li>
-<p><strong>Annotation.</strong> As part of its initialization step, the SourceMap numbers and annotates the color blocks in the source file, saving information about block sizes and corner locations that will be useful for navigation and instruction execution later.</p>
-</li>
-<li>
-<p><strong>Execution.</strong> The interpreter starts in the top left corner and starts traversing the source, executing instructions as it transitions between blocks. </p>
-</li>
-</ol>
-<h3>Annotation &amp; the Fill Algorithm</h3>
-<p>In order to interpret a program, the interpreter has to know which block it's in, know how big the block is, and know where the exit points from the block are. I opted to preprocess the source file to give each block a number, then save annotations about the size and exit points of each block. As a result, for a given location and DP/CC combination, the Navigator can look up which block it's in and how to exit that block.</p>
-<p>To perform this preprocessing, I opted to run a simple flood fill algorithm over the source file. The SourceMap loops over each pixel in the source file, checking to see if that pixel already has already been assigned to a block and kicking off a flood fill at that location if not. The flood fill marks the pixel as visited, gives it a number, and adds the adjacent pixels of the same color to a queue. It works through that queue, giving those pixels the same number, marking them as visited, and adding same-colored pixels adjacent to them to the queue. When it runs out of pixels of the same color, the main loop continues on until it runs into another unfilled pixel.</p>
-<p>That accounts for the block separation, but we still need annotations for size and exits. Luckily, we can take care of those while visiting the pixels to number them! By keeping a map from block numbers to block sizes, we just have to add one to our record of a block's size every time we add a pixel to it. Similarly, by storing candidate exit points the same way we can simply check every new pixel as it is added to see if it should replace any of the candidate exit points of the same number.</p>
-<h3>Room for improvement</h3>
-<p>The one aspect of the Piet spec I didn't nail (or intentionally compromise on) is the question of reading user input. Piet provides for two input instructions, <code>in(char)</code> and <code>in(number)</code>. The specification indicates that the "in" command reads a value from STDIN as either a character or number, depending on the variant. While I was able to approximate appropriate input commands with sys.stdin.read, it's something I'd really like to revisit.</p>
-<p>In terms of Python best practices, there are also a couple of things lacking in Pyet. While the project is PEP8 compliant, it's not PEP257 compliant: there are no docstrings at all! It's also pretty short on tests: other than a few tests to help me make sure the PietStack worked appropriately, the project is in need of many more unit tests to reach 100% coverage. </p>
-<h3>Future Directions</h3>
-<p>Now that I've got a (mostly) functional Piet interpreter, there are a lot of fun enhancements I can make to it. Here are a few that jumped out at me immediately.</p>
-<ul>
-<li>
-<p>Add another dimension: while the Piet instruction set and movement rules only account for travel along the x or y axis, most of it can be generalized to add another dimension without too much trouble. Anything that refers to block "area" now refers to block "volume" and when navigating there are now 8 possible directions (with 4 orientations each) rather than 4 possible directions (with 2 orientations each).</p>
-</li>
-<li>
-<p>Add new colors/instructions: The Piet instruction set includes eighteen non-special colors and a corresponding seventeen instructions (one for every transition a given color can make to any other color). By adding a new set of colors, room opens up for more instructions.</p>
-</li>
-<li>
-<p>Allow for configurable colors: While we're mucking about with the color sets, why not add configurable mappings between the actual image colors and the canonical Piet colors? Pyet uses a hardcoded list of what pixel colors map to which Piet colors and how the Piet colors are ordered, but by making those mappings configurable we can make programs with whatever twenty shades we want.</p>
-</li>
-<li>
-<p>Create a transition graph: by annotating the source with the transition points between blocks, we're just one step away from being able to create a graph with the blocks as nodes and transitions as edges. Attach labels with the appropriate commands during each transition, and it might be possible to identify optimizations in the program or translate it to other languages.</p>
-</li>
-</ul>
-<p>It's clear that there's still a lot of potential in this project, and I have a feeling I'll be returning to it over time as I learn more about Python best practices and relevant design patterns. In the meantime I'm pleased to have put together a fun programmable toy from start to finish.</p>                </article>
-            </aside><!-- /#featured -->
+</footer><!-- /.post-info -->                <p>This month I was hunting for a fun Python project I could get done with just the standard library when I read <a href="http://jennmoney.biz/">Jenn Schiffer</a>'s <a href="http://vart.institute/mondrian/index.html">vart.institute article on Piet Mondrian</a>. The article linked to the <a href="http://www.dangermouse.net/esoteric/piet.html">Piet Programming Language</a>. With a limited set of instructions and equally limited state (a ...</p>
+                <a class="readmore" href="http://jdherg.github.io/posts/2014/11/21/pyet/">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
         <section id="extras" class="body">
